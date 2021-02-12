@@ -1,0 +1,23 @@
+{
+  "identity.unlock_entity": "%sの自我を手に入れた",
+  "identity.revoke_entity": "%sであるという記憶は塵と消えてしまった...",
+  "identity.grant_success": "%sの自我を%sに与えました",
+  "identity.revoke_success": "%sの自我を%sから剥奪しました",
+  "identity.already_has": "%sは既に%sの自我を持っています",
+  "identity.does_not_have": "%sは%sの自我を持っていません",
+  "identity.equip_success": "%sの自我を%sにしました",
+  "identity.unequip_success": "%sは自我を取り戻した",
+  "identity.test_positive": "%sは%sに変身している",
+  "identity.test_failed": "%sは%sに変身していない",
+  "identity.menu_hint": "自我を手に入れるには、ワールドにいる生き物を殺しましょう...",
+  "identity.help": "Identityのヘルプを開く",
+  "identity.help.ability_label": "能力の使用",
+  "identity.help.ability_description_1": "Mobの能力を使うには、Rキーを押してください",
+  "identity.help.ability_description_2": "スクリーンの右下にもう1度能力を使えるようになるまでの時間を示すアイコンが表示されます",
+  "identity.help.ability_description_3": "使用できるすべての能力のリストは次のリンクを参照してください: https://github.com/Draylar/identity/wiki/Abilities",
+  "identity.help.config_label": "Identityの設定",
+  "identity.help.config_description": "設定ファイル(/config/identity.json5)を編集してください",
+  "identity.help.return": "Identityのメニューに戻るには何かキーを押してください",
+  "key.identity": "Identityのメニューを開く",
+  "key.identity_ability": "Identityの能力を使用"
+}
