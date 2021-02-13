@@ -14,6 +14,9 @@ With *Identity*, you can become anything you want, friend or foe, hot or cold, f
 
 ![](https://i.imgur.com/VyzaCY3.png)
 
+### Modification from The Original
+In addition to players, entities can also disguise as other mobs using `/identity equip` command.
+
 ### Getting Started
 
 To unlock an *Identity*, kill a nearby mob. You'll see a notification above your hotbar informing you of the unlock. You can then press the ` key to swap between identities.
