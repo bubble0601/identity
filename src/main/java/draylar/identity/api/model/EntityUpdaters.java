@@ -58,21 +58,21 @@ public class EntityUpdaters {
 
     public static void init() {
         // register specific entity animation handling
-        EntityUpdaters.register(EntityType.BAT, (player, bat) -> {
-            if (player.isOnGround()) {
+        EntityUpdaters.register(EntityType.BAT, (entity, bat) -> {
+            if (entity.isOnGround()) {
                 bat.setRoosting(true);
             } else {
                 bat.setRoosting(false);
             }
         });
 
-        EntityUpdaters.register(EntityType.PARROT, (player, parrot) -> {
-            if (player.isOnGround() && ((NearbySongAccessor) player).identity_isNearbySongPlaying()) {
-                parrot.setNearbySongPlaying(player.getBlockPos(), true);
+        EntityUpdaters.register(EntityType.PARROT, (entity, parrot) -> {
+            if (entity.isOnGround() && ((NearbySongAccessor) entity).identity_isNearbySongPlaying()) {
+                parrot.setNearbySongPlaying(entity.getBlockPos(), true);
                 parrot.setSitting(true);
                 parrot.setOnGround(true);
-            } else if (player.isOnGround()) {
-                parrot.setNearbySongPlaying(player.getBlockPos(), false);
+            } else if (entity.isOnGround()) {
+                parrot.setNearbySongPlaying(entity.getBlockPos(), false);
                 parrot.setSitting(true);
                 parrot.setOnGround(true);
                 parrot.prevFlapProgress = 0;
@@ -80,7 +80,7 @@ public class EntityUpdaters {
                 parrot.maxWingDeviation = 0;
                 parrot.prevMaxWingDeviation = 0;
             } else {
-                parrot.setNearbySongPlaying(player.getBlockPos(), false);
+                parrot.setNearbySongPlaying(entity.getBlockPos(), false);
                 parrot.setSitting(false);
                 parrot.setOnGround(false);
                 parrot.setInSittingPose(false);
@@ -88,15 +88,15 @@ public class EntityUpdaters {
             }
         });
 
-        EntityUpdaters.register(EntityType.ENDER_DRAGON, (player, dragon) -> {
+        EntityUpdaters.register(EntityType.ENDER_DRAGON, (entity, dragon) -> {
             dragon.wingPosition += 0.01F;
             dragon.prevWingPosition = dragon.wingPosition;
 
             // setting yaw without +180 making tail faces front, for some reason
             if (dragon.latestSegment < 0) {
                 for (int l = 0; l < dragon.segmentCircularBuffer.length; ++l) {
-                    dragon.segmentCircularBuffer[l][0] = (double) player.yaw + 180;
-                    dragon.segmentCircularBuffer[l][1] = player.getY();
+                    dragon.segmentCircularBuffer[l][0] = (double) entity.yaw + 180;
+                    dragon.segmentCircularBuffer[l][1] = entity.getY();
                 }
             }
 
@@ -104,12 +104,12 @@ public class EntityUpdaters {
                 (dragon).latestSegment = 0;
             }
 
-            dragon.segmentCircularBuffer[dragon.latestSegment][0] = (double) player.yaw + 180;
-            dragon.segmentCircularBuffer[dragon.latestSegment][1] = player.getY();
+            dragon.segmentCircularBuffer[dragon.latestSegment][0] = (double) entity.yaw + 180;
+            dragon.segmentCircularBuffer[dragon.latestSegment][1] = entity.getY();
         });
 
-        EntityUpdaters.register(EntityType.ENDERMAN, (player, enderman) -> {
-            ItemStack heldStack = player.getMainHandStack();
+        EntityUpdaters.register(EntityType.ENDERMAN, (entity, enderman) -> {
+            ItemStack heldStack = entity.getMainHandStack();
 
             if (heldStack.getItem() instanceof BlockItem) {
                 enderman.setCarriedBlock(((BlockItem) heldStack.getItem()).getBlock().getDefaultState());

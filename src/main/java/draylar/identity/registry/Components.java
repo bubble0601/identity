@@ -4,9 +4,11 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import dev.onyxstudios.cca.internal.entity.CardinalEntityInternals;
 import draylar.identity.Identity;
 import draylar.identity.cca.*;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
+import net.minecraft.entity.LivingEntity;
 
 public class Components implements EntityComponentInitializer {
 
@@ -32,7 +34,9 @@ public class Components implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(Components.CURRENT_IDENTITY, IdentityComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(Components.CURRENT_IDENTITY, PlayerIdentityComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerFor(LivingEntity.class, Components.CURRENT_IDENTITY, IdentityEntityComponent::new);
+        CardinalEntityInternals.registerRespawnCopyStrat(Components.CURRENT_IDENTITY, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(Components.UNLOCKED_IDENTITIES, UnlockedIdentitiesComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(Components.FAVORITE_IDENTITIES, FavoriteIdentitiesComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(Components.HOSTILITY, player -> new HostilityComponent(), RespawnCopyStrategy.ALWAYS_COPY);

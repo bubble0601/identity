@@ -18,8 +18,8 @@ public interface EntityUpdater<Entity extends LivingEntity> {
      *
      * <p>Called once every render update on the client.
      *
-     * @param from  {@link PlayerEntity} to copy properties from
+     * @param from  {@link LivingEntity} to copy properties from
      * @param to  {@link Entity} to copy properties to
      */
-    void update(PlayerEntity from, Entity to);
+    void update(LivingEntity from, Entity to);
 }

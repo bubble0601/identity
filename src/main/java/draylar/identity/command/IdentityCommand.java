@@ -19,6 +19,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.Collection;
+
 public class IdentityCommand {
 
     public static void register() {
@@ -65,12 +67,12 @@ public class IdentityCommand {
 
             LiteralCommandNode<ServerCommandSource> equip = CommandManager
                     .literal("equip")
-                    .then(CommandManager.argument("player", EntityArgumentType.players())
+                    .then(CommandManager.argument("entity", EntityArgumentType.entities())
                             .then(CommandManager.argument("identity", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         equip(
                                                 context.getSource().getPlayer(),
-                                                EntityArgumentType.getPlayer(context, "player"),
+                                                EntityArgumentType.getEntities(context, "entity"),
                                                 EntitySummonArgumentType.getEntitySummon(context, "identity")
                                         );
                                         return 1;
@@ -81,11 +83,15 @@ public class IdentityCommand {
 
             LiteralCommandNode<ServerCommandSource> unequip = CommandManager
                     .literal("unequip")
-                    .then(CommandManager.argument("player", EntityArgumentType.players())
+                    .then(CommandManager.argument("entity", EntityArgumentType.entities())
                             .executes(context -> {
+                                System.out.println(context.toString());
+                                System.out.println(context.getSource().getPlayer());
+                                System.out.println(context.getNodes());
+                                System.out.println(EntityArgumentType.getEntities(context, "entity"));
                                 unequip(
                                         context.getSource().getPlayer(),
-                                        EntityArgumentType.getPlayer(context, "player")
+                                        EntityArgumentType.getEntities(context, "entity")
                                 );
                                 return 1;
                             })
@@ -202,27 +208,34 @@ public class IdentityCommand {
         }
     }
 
-    private static void equip(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity)  {
-        IdentityComponent current = Components.CURRENT_IDENTITY.get(player);
-        EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
+    private static void equip(ServerPlayerEntity source, Collection<? extends Entity> targets, Identifier identity)  {
+        for (Entity entity: targets) {
+            IdentityComponent current = Components.CURRENT_IDENTITY.get(entity);
+            System.out.println(current.toString());
+            EntityType<?> entityType = Registry.ENTITY_TYPE.get(identity);
 
-        Entity createdEntity = entity.create(player.world);
+            Entity createdEntity = entityType.create(entity.world);
 
-        if(createdEntity instanceof LivingEntity) {
-            current.setIdentity((LivingEntity) createdEntity);
+            if(createdEntity instanceof LivingEntity) {
+                current.setIdentity((LivingEntity) createdEntity);
 
-            if(Identity.CONFIG.logCommands) {
-                source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+                if(Identity.CONFIG.logCommands) {
+                    source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entityType.getTranslationKey()), entity.getDisplayName()), true);
+                }
             }
         }
     }
 
-    private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
-        IdentityComponent current = Components.CURRENT_IDENTITY.get(player);
-        current.setIdentity(null);
+    private static void unequip(ServerPlayerEntity source, Collection<? extends Entity> targets) {
+        for (Entity entity: targets) {
+            System.out.println(entity.toString());
+            IdentityComponent current = Components.CURRENT_IDENTITY.get(entity);
+            System.out.println(current.toString());
+            current.setIdentity(null);
 
-        if(Identity.CONFIG.logCommands) {
-            source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.unequip_success", entity.getDisplayName()), false);
+            }
         }
     }
 }
